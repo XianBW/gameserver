@@ -112,4 +112,27 @@ class MainController {
         }
         return gson.toJson(game)
     }
+
+    @ResponseBody
+    @GetMapping("/sale")
+    fun returnOnSaleGame():String {
+        var game = Game()
+        mJdbcTemplate.query("select name,image,game.id id from game,game_price where game.id = game_price.game_id and last_modified >= all(select last_modified from game_price);"){it0 ->
+            var minPrice = "99999"
+            val gameId = it0.getInt("id")
+            mJdbcTemplate.query("select price from game_price where game_id = $gameId;"){
+                val price = it.getString("price")
+                if(minPrice.length>price.length||minPrice.length==price.length&&minPrice>price)
+                    minPrice = price
+            }
+
+            game = Game(
+                    Name = it0.getString("name"),
+                    Image = it0.getString("image"),
+                    Price = minPrice
+            )
+        }
+
+        return gson.toJson(game)
+    }
 }

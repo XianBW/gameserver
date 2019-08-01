@@ -30,7 +30,7 @@ class BeforeStart:ApplicationRunner {
     override fun run(args: ApplicationArguments?) {
         val filePaths = arrayOf<String>(
                 "E:\\gameserver\\src\\main\\resources\\static\\data_2.json",
-                "E:\\gameserver\\src\\main\\resources\\static\\data_1.json"
+                "E:\\gameserver\\src\\main\\resources\\static\\data_3.json"
         )
         filePaths.forEach{filePath ->
             val file = File(filePath)
