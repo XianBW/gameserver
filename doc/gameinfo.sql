@@ -16,6 +16,13 @@ create table game_price(
     link varchar(500),
     site varchar(20),
     last_modified datetime,
+    latest boolean,
     primary key(id),
     foreign key(game_id) references game(id) on delete cascade
+);
+
+create table send_flag(
+    id varchar(16),
+    flag boolean,
+    primary key(id)
 );

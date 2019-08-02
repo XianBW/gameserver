@@ -28,6 +28,13 @@ class BeforeStart:ApplicationRunner {
     }
 
     override fun run(args: ApplicationArguments?) {
+
+//        val run = Runtime.getRuntime()
+//        run.exec("cmd.exe /k start " + "python craw.py")
+//        Thread.sleep(1000*60*60*2)
+
+        mJdbcTemplate.update("delete from send_flag;")
+
         val filePaths = arrayOf<String>(
                 "E:\\gameserver\\src\\main\\resources\\static\\data_2.json",
                 "E:\\gameserver\\src\\main\\resources\\static\\data_3.json"
@@ -59,7 +66,8 @@ class BeforeStart:ApplicationRunner {
                 }
 
                 if (!hasSamePrice) {
-                    mJdbcTemplate.update("insert into game_price value(default,$gameId,'${game.price?.replace(",","")}','${game.link}','${game.site?:"steam"}',now());")
+                    mJdbcTemplate.update("update game_price set latest = 0 where game_id = $gameId and site = '${game.site?:"steam"}';")
+                    mJdbcTemplate.update("insert into game_price value(default,$gameId,'${game.price?.replace(",","")}','${game.link}','${game.site?:"steam"}',now(),1);")
                 }
             }
         }
